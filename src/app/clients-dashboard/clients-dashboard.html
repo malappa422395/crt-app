@@ -1,0 +1,55 @@
+<div class="card">
+    <ng-container *ngIf="products$ | async as products; else loading">
+        <p-table [value]="products" stripedRows [tableStyle]="{'min-width': '50rem'}" [paginator]="true" [rows]="5"
+            [rowsPerPageOptions]="[5, 10, 20]" selectionMode="single" [(selection)]="selectedProducts"
+            dataKey="clientId">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="clientFirstName">First Name</th>
+                    <th pSortableColumn="clientLastName">Last Name</th>
+                    <th pSortableColumn="partyEngagementType">Engagement Types</th>
+                    <th pSortableColumn="clientTelNumber">Telephone Number</th>
+                    <th pSortableColumn="fas[0].faNum">FA Number</th>
+                </tr>
+                <tr>
+                    <th>
+                        <p-columnFilter type="text" field="clientFirstName" placeholder="Type to search"
+                            ariaLabel="Filter Client First Name" filterOn="input"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" field="clientLastName" placeholder="Enter key to search"
+                            ariaLabel="Filter Client Last Name"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" field="partyEngagementType" placeholder="Enter key to search"
+                            ariaLabel="Filter Party Engagement Type"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" field="clientTelNumber" placeholder="Enter key to search"
+                            ariaLabel="Filter Client Telephone Number"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" field="fas[0].faNum" placeholder="Enter key to search"
+                            ariaLabel="Filter FA Number"></p-columnFilter>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr [pSelectableRow]="product">
+                    <td>{{product.clientFirstName}}</td>
+                    <td>{{product.clientLastName}}</td>
+                    <td>{{product.partyEngagementType}}</td>
+                    <td>{{product.clientTelNumber}}</td>
+                    <td>{{product.fas[0].faNum}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-container>
+    <ng-template #loading>
+        <p>Data is loading</p>
+    </ng-template>
+    <div class="card mt-4">
+        <app-accounts-layout-component [selectedProducts]="selectedProducts"></app-accounts-layout-component>
+    </div>
+
+</div>

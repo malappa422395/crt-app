@@ -1,0 +1,13 @@
+.accounts-layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.button-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}

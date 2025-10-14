@@ -1,0 +1,12 @@
+<div class="accounts-layout">
+    <div class="card mt-4" style="width: 45%; height: 400px;">
+        <app-accounts-soure-component [selectedProducts]="selectedProducts" (getSelectedAccounts)="getSelectedAccounts($event)"></app-accounts-soure-component>
+    </div>
+    <div class="button-group" style="width: 10%">
+        <button pButton icon="pi pi-chevron-left" label="Add" (click)="addAccounts()"></button>
+        <!-- <button pButton icon="pi pi-chevron-right" label="Remove" (click)="removeAccounts(selectedProducts)"></button> -->
+    </div>
+    <div class="card mt-4" style="width: 45%; height: 400px;">
+        <app-accounts-target-component [targetAccounts]="targetAccounts" (getSelectedTargetAccounts)="getSelectedTargetAccounts($event)"></app-accounts-target-component>
+    </div>
+</div>

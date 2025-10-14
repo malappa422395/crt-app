@@ -1,0 +1,51 @@
+<div>
+    <ng-container *ngIf="targetAccounts; else accountsLoading">
+        <p-table [value]="targetAccounts" stripedRows [tableStyle]="{'min-width': '50rem'}"
+            [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]" selectionMode="single"
+            [(selection)]="selectedTargetAccounts" dataKey="clientAccountNumber">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+                    <th pSortableColumn="clientAccountName">Account Name</th>
+                    <th pSortableColumn="clientAccountNumber">Account Number</th>
+                    <th pSortableColumn="marketValue">Market Value</th>
+                    <th pSortableColumn="faNum">FA Number</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <p-columnFilter type="text" field="clientAccountName" placeholder="Type to search"
+                            ariaLabel="Filter Client Account Name" filterOn="input"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" field="clientAccountNumber" placeholder="Enter key to search"
+                            ariaLabel="Filter Client Account Number"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" field="marketValue" placeholder="Enter key to search"
+                            ariaLabel="Filter Market Value"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" field="faNum" placeholder="Enter key to search"
+                            ariaLabel="Filter FA Number"></p-columnFilter>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-account>
+                <tr [pSelectableRow]="account">
+                    <td>
+                        <p-tableCheckbox [value]="account" (change)="onAccountSelect(account)"></p-tableCheckbox>
+                    </td>
+                    <td>{{account.clientAccountName}}</td>
+                    <td>{{account.clientAccountNumber}}</td>
+                    <td>{{account.marketValue}}</td>
+                    <td>{{account.faNum}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-container>
+    <ng-template #accountsLoading>
+        <p>Client Accounts not yet selected.</p>
+    </ng-template>
+    
+</div>
