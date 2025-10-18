@@ -6,7 +6,7 @@ import { TableModule } from 'primeng/table';
   selector: 'app-accounts-soure-component',
   imports: [CommonModule, TableModule],
   templateUrl: './accounts-soure-component.html',
-  styleUrl: './accounts-soure-component.scss'
+  styleUrl: './accounts-soure-component.scss',
 })
 export class AccountsSoureComponent {
 

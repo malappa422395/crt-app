@@ -1,9 +1,8 @@
 <div>
     <ng-container>
-        <p-table [value]="selectedProducts?.accounts" stripedRows [tableStyle]="{'min-width': '50rem'}"
-            [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]" selectionMode="single"
-            [(selection)]="selectedAccounts" dataKey="clientAccountNumber"
-            (onHeaderCheckboxToggle)="onSelectAll($event)">
+        <p-table [value]="selectedProducts?.accounts" stripedRows [paginator]="true" [rows]="5"
+            [rowsPerPageOptions]="[5, 10, 20]" selectionMode="single" [(selection)]="selectedAccounts"
+            dataKey="clientAccountNumber" (onHeaderCheckboxToggle)="onSelectAll($event)">
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
@@ -41,6 +40,11 @@
                     <td>{{account.clientAccountNumber}}</td>
                     <td>{{account.marketValue}}</td>
                     <td>{{account.faNum}}</td>
+                </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="6">There are no Client Accounts.</td>
                 </tr>
             </ng-template>
         </p-table>
