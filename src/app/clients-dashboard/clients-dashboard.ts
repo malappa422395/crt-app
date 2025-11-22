@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-clients-dashboard',
-  imports: [CommonModule, FormsModule,TableModule, AccountsLayoutComponent, RadioButtonModule],
+  imports: [CommonModule, FormsModule, TableModule, AccountsLayoutComponent, RadioButtonModule],
   templateUrl: './clients-dashboard.html',
   styleUrl: './clients-dashboard.scss',
 })
@@ -22,21 +22,22 @@ export class ClientsDashboard {
   products$!: Observable<any[]>;
   selectedProducts!: any;
   accountsCategory!: { name: string; key: string };
-  
+
   categories: any[] = [
-        { name: 'Clients', key: 'C' },
-        { name: 'Prospects', key: 'P' },
-    ];
+    { name: 'Clients', key: 'C' },
+    { name: 'Prospects', key: 'P' },
+  ];
   constructor(private clientsDataService: ClientsDataService) { }
 
   ngOnInit() {
     this.accountsCategory = this.categories[0];
-    this.products$ = from(this.clientsDataService.getProducts()).pipe(
-      map((data: any) => (data.docs as any[]).map((item: any) => {
+    this.products$ = this.clientsDataService.getProducts().pipe(
+      map((data: any) => (data.response.docs as any[]).map((item: any) => {
         return { ...item };
       }))
     );
+
   }
 }
-    
+
 

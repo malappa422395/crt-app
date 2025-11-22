@@ -1,0 +1,208 @@
+{
+    "serviceContext": {
+        "responseId": "b7b2425e-e70f-485f-82f6-d8dcf46be6e9",
+        "timestamp": "2025-11-16T15:44:59.017Z",
+        "correlationId": "19e9bc7d-ba54-450f-b0de-34f0782c97f1"
+    },
+    "arrangements": [
+        {
+            "key": {
+                "arrangementIdentifierValue": "488N9998",
+                "originatingSourceSystemProviderCode": "BKRBO1"
+            },
+            "id": 1418972878,
+            "arrangementNickname": "O Brien David",
+            "businessUserArrangementName": "David Direct IRA Annuity",
+            "arrangementLegalName": "David J O Brien IRA Direct Custodian",
+            "businessRep": {
+                "faNumber": "8CN3",
+                "faName": "Mike Kanner",
+                "branchCode": "AGW10",
+                "branchCity": "Vero Beach",
+                "branchState": "FL",
+                "primaryPid": "423096"
+            },
+            "lifeCycleStatusType": {
+                "code": "ACTVE",
+                "name": "Active"
+            },
+            "marketValue": {
+                "amount": "236491.43",
+                "code": "USD"
+            },
+            "marketValueDate": "2020-07-31",
+            "openDateTime": "2019-08-08T04:00:00Z",
+            "inceptionDate": "2019-09-17",
+            "primaryPartyFpn": "6C87RR732",
+            "iraFlag": true,
+            "erisaFlag": false,
+            "dolEligibility": {
+                "code": "DOLAFFLT",
+                "name": "DOL Affiliated"
+            },
+            "category": {
+                "code": "DRCT",
+                "name": "Direct"
+            },
+            "productType": {
+                "code": "TRADIRA",
+                "name": "Traditional IRA"
+            },
+            "productName": {
+                "code": "TRADIRAD",
+                "name": "Traditional IRA - Direct"
+            },
+            "discretionaryTrading": {
+                "code": "NONDISC",
+                "name": "Non-Discretionary"
+            },
+            "discretionaryTradingLifeCycleStatusType": {
+                "code": "DISCTRDNOTAPP",
+                "name": "Not Applicable"
+            },
+            "custodianType": {
+                "code": "CSTDNOUT",
+                "name": "Outside Firm"
+            },
+            "groups": [
+                {
+                    "id": 18664063,
+                    "name": "Vargo/O'Brien",
+                    "type": "MGRREL",
+                    "sequenceNumber": 3
+                },
+                {
+                    "id": 17582174,
+                    "name": "David O'Brien",
+                    "type": "STMREL",
+                    "sequenceNumber": 3
+                },
+                {
+                    "id": 18664062,
+                    "name": "David O'Brien",
+                    "type": "ACCREL",
+                    "sequenceNumber": 3
+                },
+                {
+                    "id": 17327293,
+                    "name": "Vargo",
+                    "type": "MFBREL",
+                    "sequenceNumber": 8
+                }
+            ],
+            "features": {
+                "optionCommissionOverride": {
+                    "flag": false
+                },
+                "restricted": {
+                    "flag": true,
+                    "restrictions": [
+                        {
+                            "effectiveDate": "2022-03-23",
+                            "expirationDate": "9999-12-31",
+                            "reasonCode": "RSNDSA",
+                            "typeCode": "RSTDSA"
+                        },
+                        {
+                            "effectiveDate": "2019-08-08",
+                            "expirationDate": "9999-12-31",
+                            "reasonCode": "RSTRSCMP",
+                            "reasonDescription": "Compliance   ",
+                            "typeCode": "RSTBLKMON",
+                            "typeDescription": "Block all monetary"
+                        }
+                    ]
+                },
+                "retirement": {
+                    "flag": true,
+                    "description": "IRA"
+                },
+                "dividendReinvestment": {
+                    "flag": false
+                }
+            }
+        },
+        {
+            "key": {
+                "arrangementIdentifierValue": "12020010",
+                "originatingSourceSystemProviderCode": "BKRBO1"
+            },
+            "id": 4233954,
+            "arrangementNickname": "O Beirne Ranela",
+            "businessUserArrangementName": "Bawn",
+            "arrangementLegalName": "Bawn O Beirne Ranelagh",
+            "businessRep": {
+                "faNumber": "50Q4",
+                "faName": "CHARLES CAMPBELL",
+                "branchCode": "2AM",
+                "branchCity": "London",
+                "primaryPid": "114202"
+            },
+            "lifeCycleStatusType": {
+                "code": "ACTVE",
+                "name": "Active"
+            },
+            "marketValue": {
+                "amount": "150901.77",
+                "code": "USD"
+            },
+            "marketValueDate": "2020-07-31",
+            "openDateTime": "2004-09-14T04:00:00Z",
+            "inceptionDate": "2004-09-24",
+            "primaryPartyFpn": "6N22U91AY",
+            "iraFlag": false,
+            "erisaFlag": false,
+            "dolEligibility": {
+                "code": "DOLNTELAFF",
+                "name": "Not DOL Eligible Affiliated"
+            },
+            "category": {
+                "code": "RTLTRDNG",
+                "name": "Retail"
+            },
+            "productType": {
+                "code": "GENBRKRGE",
+                "name": "General Brokerage"
+            },
+            "productName": {
+                "code": "IDV",
+                "name": "Individual"
+            },
+            "discretionaryTrading": {
+                "code": "NONDISC",
+                "name": "Non-Discretionary"
+            },
+            "discretionaryTradingLifeCycleStatusType": {
+                "code": "DISCTRDNOTAPP",
+                "name": "Not Applicable"
+            },
+            "custodianType": {
+                "code": "CSTDNNTAPL",
+                "name": "Not Applicable"
+            },
+            "groups": [
+                {
+                    "id": 512712,
+                    "name": "O Beirne Ranela",
+                    "type": "ACCREL",
+                    "sequenceNumber": 1
+                },
+                {
+                    "id": 8339902,
+                    "name": "Bawn",
+                    "type": "STMREL",
+                    "sequenceNumber": 1
+                }
+            ],
+            "features": {
+                "optionCommissionOverride": {
+                    "flag": false
+                },
+                "dividendReinvestment": {
+                    "flag": false
+                }
+            }
+        }
+    ],
+    "parties": []
+}

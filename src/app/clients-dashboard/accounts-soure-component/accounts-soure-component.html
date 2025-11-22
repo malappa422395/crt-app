@@ -1,6 +1,6 @@
 <div>
     <ng-container>
-        <p-table [value]="selectedProducts?.accounts" stripedRows [paginator]="true" [rows]="5"
+        <p-table [value]="sourceAccounts" stripedRows [paginator]="true" [rows]="5"
             [rowsPerPageOptions]="[5, 10, 20]" selectionMode="single" [(selection)]="selectedAccounts"
             dataKey="clientAccountNumber" (onHeaderCheckboxToggle)="onSelectAll($event)">
             <ng-template pTemplate="header">
