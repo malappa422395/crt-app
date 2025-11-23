@@ -179,7 +179,7 @@ export class AccountsTargetComponent {
           "cert_asofdate": accountObj.marketValueDate,
           "cert_valueofaccount": parseFloat(accountObj.marketValue),
           "cert_name": accountObj.accountName,
-          "cert_istaxreportingholder": parseInt(accountObj?.taxFlag),
+          "cert_istaxreportingholder": parseInt(accountObj?.taxFlag) === 1 ? true : false,
           "cert_moneymanager": accountObj.productName,
           "cert_accountholder_name": certAccountholderName,
           "cert_caseid@odata.bind": "/cert_cases(" + caseId + ")"
