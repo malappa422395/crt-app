@@ -15,7 +15,7 @@ export class AccountsLayoutComponent {
   selectedAccounts: any;
   targetAccounts: Array<any> = [];
   addAccounts() {
-    this.targetAccounts = [...this.targetAccounts, ...this.selectedAccounts];
+    this.targetAccounts = [...this.targetAccounts, ...this?.selectedAccounts];
     this.selectedAccounts = null;
   }
   removeAccounts(product: any) {

@@ -6,7 +6,7 @@ import { map, Observable } from 'rxjs';
 import { AccountsLayoutComponent } from "./accounts-layout-component/accounts-layout-component";
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { FormsModule } from '@angular/forms';
-import { getUrlParameters } from '../utils';
+import { getIframeQueryParams } from '../utils';
 import { faParameters, FaUserStore } from '../faStore';
 import { getClientsPayload } from '../clientsApiPayload';
 import { ClientsPayload } from '../types';
@@ -31,10 +31,21 @@ export class ClientsDashboard {
   constructor(private clientsDataService: ClientsDataService, private faUserStore: FaUserStore) { }
   ngOnInit() {
     this.categoryType = this.categoryTypes[0];
-    this.urlParams = getUrlParameters();
-    // this.urlParams = { data: JSON.stringify({ pId: '077859' }) } 
-    if (this.urlParams && this.urlParams.data) {
-      const urlData = JSON.parse(this.urlParams.data);
+    this.urlParams = getIframeQueryParams();
+    // this.urlParams = {
+    //   data: JSON.stringify({
+    //     "cId": "{269E5EA0-D7C7-F011-B917-000D3A1C0DFD}",
+    //     "cssId": "Riley, Julie",
+    //     "pId": "689681",
+    //     "ntlogin": "jriley1",
+    //     "clientBaseUrl": "https://searchqa.rjf.com",
+    //     "prospectBaseUrl": "https://apiqa.rjf.com",
+    //     "globalContextUrl": "http://crmdevbox:5555/CERT",
+    //     "accountBaseUrl": "https://apiqa.rjf.com"
+    //   })
+    // }
+    if (this.urlParams && this.urlParams?.get("data")) {
+      const urlData = JSON.parse(this.urlParams.get("data") ?? '{}');
       const faUserParameters: faParameters = {
         cId: urlData?.cId?.substring(1, 37),
         cssId: urlData?.cssId,
@@ -48,7 +59,7 @@ export class ClientsDashboard {
       if (faUserParameters) {
         this.faUserStore.setUser(faUserParameters);
       }
-      const clientsPayload: ClientsPayload = getClientsPayload({ntlogin: faUserParameters.ntlogin ?? ''});
+      const clientsPayload: ClientsPayload = getClientsPayload({ ntlogin: faUserParameters.ntlogin ?? '' });
       this.products$ = this.clientsDataService.getClients(clientsPayload).pipe(
         map((data: any) => (data.response.docs as any[]).map((item: any) => {
           return { ...item };

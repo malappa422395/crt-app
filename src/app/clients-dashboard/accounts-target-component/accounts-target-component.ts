@@ -29,22 +29,21 @@ export class AccountsTargetComponent {
     console.log('Creating cases for selected accounts:', this.selectedTargetAccounts);
     this.clients = [
       ...new Map(
-        this.selectedTargetAccounts.map(acc => [acc.clientId, acc])
+        this.selectedTargetAccounts?.map(acc => [acc.clientId, acc])
       ).values()
     ];
     // Implement case creation logic here
     this.CreateRecord();
   }
   CreateRecord() {
-    // const urlParams: any = this.getUrlParameters();
     console.log("Filtered the Relationship collection with selected Account number");
     console.log("Record creation Process Started");
     if (this.faUserParams) {
-      const contactId = this.faUserParams.cId?.substring(1, 37);
-      const cssId = this.faUserParams.cssId;
-      this.MMAService.CRM_BASE_URL = this.faUserParams.globalContextUrl ?? '';
+      const contactId = this.faUserParams?.cId;
+      const cssId = this.faUserParams?.cssId;
+      this.MMAService.CRM_BASE_URL = this.faUserParams?.globalContextUrl ?? '';
       let certtitle: string = '';
-      this.selectedRowData = this.selectedTargetAccounts[0];
+      this.selectedRowData = this.selectedTargetAccounts?.[0];
       if (this.selectedRowData) {
         if (this.selectedRowData.clientLastName) {
           certtitle = this.selectedRowData.clientLastName + ', ' + this.selectedRowData.clientFirstName + " - " + cssId;
@@ -120,7 +119,8 @@ export class AccountsTargetComponent {
     const secondaryClients = this.selectedTargetAccounts?.filter((acc: any) => acc.clientId !== this.selectedRowData.clientId)
     const secondaryClientIds = secondaryClients?.map((acc: any) => acc.clientId).join(' : ');
     const friendlyPartyNum = secondaryClients?.map((acc: any) => acc.clientFriendlyPartyNum).join(' : ');
-    const totalMarketValue = this.selectedTargetAccounts?.reduce((acc: any, curr: any) => acc + curr.marketValue, 0);
+    const totalMarketValue = this.selectedTargetAccounts?.reduce((acc: number, curr: any) => acc + parseFloat(curr.marketValue), 0);
+    console.log("Total Market Value: " + totalMarketValue);
     const caseData =
     {
       "cert_title": title,
@@ -129,7 +129,7 @@ export class AccountsTargetComponent {
       "cert_fpn": this.selectedRowData.clientFriendlyPartyNum,
       "cert_secondary_clientid": secondaryClientIds,//only if there are multiple clients selected. clientid seperated by ;
       "cert_secondaryclient_fpn": friendlyPartyNum, //only if there are multiple clients selected. friendlyPartyNum seperated by ;
-      "cert_totalmarketvalue": totalMarketValue
+      // "cert_totalmarketvalue": totalMarketValue
     }
     // create bidsL client record
     Xrm.WebApi.createRecord("cert_case", caseData).then(
@@ -179,7 +179,7 @@ export class AccountsTargetComponent {
           "cert_asofdate": accountObj.marketValueDate,
           "cert_valueofaccount": parseFloat(accountObj.marketValue),
           "cert_name": accountObj.accountName,
-          "cert_istaxreportingholder": accountObj.taxFlag,
+          "cert_istaxreportingholder": parseInt(accountObj?.taxFlag),
           "cert_moneymanager": accountObj.productName,
           "cert_accountholder_name": certAccountholderName,
           "cert_caseid@odata.bind": "/cert_cases(" + caseId + ")"

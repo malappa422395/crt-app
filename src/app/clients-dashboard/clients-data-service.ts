@@ -8,8 +8,8 @@ import { FaUserStore } from '../faStore';
   providedIn: 'root'
 })
 export class ClientsDataService {
-  private clientsJsonFilePath = '/assets/data/clients.json';
-  private accountsWithMarketValueJsonFilePath = '/assets/data/accounts.json';
+  private clientsJsonFilePath = 'https://raw.githubusercontent.com/malappa422395/crt-app/refs/heads/master/src/assets/data/clients.json';
+  private accountsWithMarketValueJsonFilePath = 'https://raw.githubusercontent.com/malappa422395/crt-app/refs/heads/master/src/assets/data/accounts.json';
   constructor(private http: HttpClient, private faUserStore: FaUserStore) { }
   getClients(clientsPayload: ClientsPayload) {
     // return this.http.post(this.faUserStore.faUser()?.clientBaseUrl, clientsPayload, { withCredentials: true }).pipe(
