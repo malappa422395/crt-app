@@ -6,7 +6,7 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
-                    <th pSortableColumn="clientAccountName">Account Name</th>
+                    <th pSortableColumn="accountName">Account Name</th>
                     <th pSortableColumn="clientAccountNumber">Account Number</th>
                     <th pSortableColumn="marketValue">Market Value</th>
                     <th pSortableColumn="faNum">FA Number</th>
@@ -14,12 +14,12 @@
                 <tr>
                     <th></th>
                     <th>
-                        <p-columnFilter type="text" field="clientAccountName" placeholder="Type to search"
-                            ariaLabel="Filter Client Account Name" filterOn="input"></p-columnFilter>
+                        <p-columnFilter type="text" field="accountName" placeholder="Type to search"
+                            ariaLabel="Filter Account Name" filterOn="input"></p-columnFilter>
                     </th>
                     <th>
                         <p-columnFilter type="text" field="clientAccountNumber" placeholder="Enter key to search"
-                            ariaLabel="Filter Client Account Number"></p-columnFilter>
+                            ariaLabel="Filter Account Number"></p-columnFilter>
                     </th>
                     <th>
                         <p-columnFilter type="text" field="marketValue" placeholder="Enter key to search"
@@ -36,7 +36,7 @@
                     <td>
                         <p-tableCheckbox [value]="account" (change)="onAccountSelect(account)"></p-tableCheckbox>
                     </td>
-                    <td>{{account.clientAccountName}}</td>
+                    <td>{{account.accountName}}</td>
                     <td>{{account.clientAccountNumber}}</td>
                     <td>{{account.marketValue}}</td>
                     <td>{{account.faNum}}</td>

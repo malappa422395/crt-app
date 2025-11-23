@@ -1,0 +1,33 @@
+ CreateCase(caseDataSet, cssid, faId, accountDataSet, groups) {
+    let title = '';
+    if(this.selectedRowData.lastName){
+      title = this.selectedRowData.lastName +', '+this.selectedRowData.firstName+ " - " + cssid;
+    }else{
+      title = this.selectedRowData.firstName+ " - " + cssid;
+    }
+    const caseData =
+    {
+      "cert_title": title,
+      "cert_financialadvisorid@odata.bind": "/contacts(" + faId + ")",
+      "cert_primary_clientid": clientId,
+      "cert_fpn": friendlyPartyNum,
+      "cert_secondary_clientid": clientId,//only if there are multiple clients selected. clientid seperated by ;
+      "cert_secondaryclient_fpn": friendlyPartyNum, //only if there are multiple clients selected. friendlyPartyNum seperated by ;
+      "cert_totalmarketvalue": this.totalMarketValue
+    }
+    // create bidsL client record
+    Xrm.WebApi.createRecord("cert_case", caseData).then(
+      (result) => {
+        console.log("Case created with ID: " + result.id);
+        this.CreateAccount(accountDataSet, result.id);
+        this.createGroupClient(groups,result.id)
+        // this.CreateClient(arrangementKeys, result.id);
+        this.OpenCaseForm(result.id);
+      },
+      (error) => {
+        console.log(error.message);
+        // handle error conditions
+      }
+    );
+    // this.CreateClient(arrangementKeys, "123");
+  }

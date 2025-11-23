@@ -1,13 +1,15 @@
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ClientsDataService } from './clients-data-service';
-import { clientsAccounts } from './types/clientsAccounts';
-import { map, Observable, from } from 'rxjs';
-import { AccountsSoureComponent } from "./accounts-soure-component/accounts-soure-component";
+import { map, Observable } from 'rxjs';
 import { AccountsLayoutComponent } from "./accounts-layout-component/accounts-layout-component";
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { FormsModule } from '@angular/forms';
+import { getUrlParameters } from '../utils';
+import { faParameters, FaUserStore } from '../faStore';
+import { getClientsPayload } from '../clientsApiPayload';
+import { ClientsPayload } from '../types';
 
 @Component({
   selector: 'app-clients-dashboard',
@@ -17,27 +19,41 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class ClientsDashboard {
-
   products: Array<any> = [];
   products$!: Observable<any[]>;
   selectedProducts!: any;
-  accountsCategory!: { name: string; key: string };
-
-  categories: any[] = [
+  categoryType!: { name: string; key: string };
+  urlParams: any;
+  categoryTypes: any[] = [
     { name: 'Clients', key: 'C' },
     { name: 'Prospects', key: 'P' },
   ];
-  constructor(private clientsDataService: ClientsDataService) { }
-
+  constructor(private clientsDataService: ClientsDataService, private faUserStore: FaUserStore) { }
   ngOnInit() {
-    this.accountsCategory = this.categories[0];
-    this.products$ = this.clientsDataService.getProducts().pipe(
-      map((data: any) => (data.response.docs as any[]).map((item: any) => {
-        return { ...item };
-      }))
-    );
-
+    this.categoryType = this.categoryTypes[0];
+    this.urlParams = getUrlParameters();
+    // this.urlParams = { data: JSON.stringify({ pId: '077859' }) } 
+    if (this.urlParams && this.urlParams.data) {
+      const urlData = JSON.parse(this.urlParams.data);
+      const faUserParameters: faParameters = {
+        cId: urlData?.cId?.substring(1, 37),
+        cssId: urlData?.cssId,
+        pId: urlData?.pId,
+        ntlogin: urlData?.ntlogin,
+        clientBaseUrl: urlData?.clientBaseUrl,
+        prospectBaseUrl: urlData?.prospectBaseUrl,
+        globalContextUrl: urlData?.globalContextUrl,
+        accountBaseUrl: urlData?.accountBaseUrl
+      }
+      if (faUserParameters) {
+        this.faUserStore.setUser(faUserParameters);
+      }
+      const clientsPayload: ClientsPayload = getClientsPayload({ntlogin: faUserParameters.ntlogin ?? ''});
+      this.products$ = this.clientsDataService.getClients(clientsPayload).pipe(
+        map((data: any) => (data.response.docs as any[]).map((item: any) => {
+          return { ...item };
+        }))
+      );
+    }
   }
 }
-
-

@@ -42,22 +42,35 @@ export class AccountsSoureComponent {
       .pipe(take(1))
       .subscribe((accountsWithMVData: any) => {
         const arrangements = accountsWithMVData?.arrangements ?? [];
-        this.sourceAccounts = value.accounts.map((acc: any) => {
-          const matchedAccount = arrangements.find(
+        this.sourceAccounts = arrangements?.map((arrange: any) => {
+          const matchedAccount = value?.accounts?.find(
             (item: any) =>
-              item.key.arrangementIdentifierValue === acc.clientAccountNumber
+              arrange.arrangementIdentifierValue === item.clientAccountNumber
           );
+          if (!matchedAccount) {
+            return null;
+          }
           return {
-            clientAccountNumber: acc.clientAccountNumber,
-            clientAccountName: acc.clientAccountName,
-            taxFlag: acc.taxFlag,
-            marketValue: matchedAccount?.marketValue?.amount ?? '--',
-            clientId: value.clientId,
-            clientFirstName: value.clientFirstName,
-            clientLastName: value.clientLastName,
-            clientMiddleName: value.clientMiddleName ?? '--',
-            friendlyPartyNum: value.friendlyPartyNum,
-            faNum: matchedAccount?.businessRep?.faNumber ?? '--',
+            // Accounts response fields
+            clientAccountNumber: arrange?.arrangementIdentifierValue ?? '--',
+            accountName: arrange?.businessUserArrangementName ?? '--',
+            friendlyPartyNum: arrange?.primaryPartyFpn ?? '--',
+            marketValue: arrange?.marketValueAmount ?? '--',
+            faNum: arrange?.faNumber ?? '--',
+            productName: arrange?.productName ?? '--',
+            marketValueDate: arrange?.marketValueDate ?? '--',
+            
+            // Clients response fields
+            clientId: value?.clientId ?? '--',
+            clientFirstName: value?.clientFirstName ?? '--',
+            clientLastName: value?.clientLastName ?? '--',
+            clientMiddleName: value?.clientMiddleName ?? '--',
+            clientFriendlyPartyNum: value?.friendlyPartyNum ?? '--',
+            clientDateOfBirth: value?.clientDateOfBirth ?? '--',
+            clientPrefix: value?.clientPrefix ?? '--',
+            clientSuffix: value?.clientSuffix ?? '--',
+            taxFlag: matchedAccount?.taxFlag ?? '--',
+            
           };
         });
         this.cdr.detectChanges(); // prevent template change errors

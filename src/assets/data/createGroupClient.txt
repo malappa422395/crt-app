@@ -1,0 +1,36 @@
+ createGroupClient(groups, caseId){
+    if (groups && groups.length > 0) {
+      groups.forEach((clientObj) => {
+        let dob = '';
+        if(clientObj.priHolder.dob){
+          const date = new Date(clientObj.priHolder.dob);
+          dob = (date.getMonth()+1)+'/'+date.getFullYear()
+        }
+        
+        const clientData =
+        {
+          "cert_dob": clientDateOfBirth,//"1947-11-21T00:00:00Z" but we need Month/year only
+          "cert_firstname": clientFirstName,
+          "cert_name": clientLastName,
+          "cert_middlename": clientMiddleName,//check for null
+          "cert_suffix": clientSuffix,//check for null
+          "cert_prefix": clientPrefix,//check for null
+          "cert_clientid": clientId,//check for null
+          "cert_fpn": friendlyPartyNum,//check for null
+           "cert_clienttype" : 690480000,
+          "cert_caseid@odata.bind": "/cert_cases(" + caseId + ")"
+        }
+        // create bidsL client record
+        Xrm.WebApi.createRecord("cert_clientprospect", clientData).then(
+          (result) => {
+            console.log("Client created with ID: " + result.id);
+            // perform operations on record creation
+          },
+          (error) => {
+            console.log(error.message);
+            // handle error conditions
+          }
+        );
+      })
+    }
+  }

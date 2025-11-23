@@ -5,16 +5,16 @@
                 Please select category
             </div>
             <div class="flex flex-row gap-2">
-                <div *ngFor="let category of categories" class="field-checkbox">
+                <div *ngFor="let category of categoryTypes" class="field-checkbox">
                     <p-radiobutton [inputId]="category.key" name="category" [value]="category"
-                        [(ngModel)]="accountsCategory" />
+                        [(ngModel)]="categoryType" />
                     <label [for]="category.key" class="ml-2">{{ category.name }}</label>
                 </div>
             </div>
           
         </div>
     </div>
-    <div class="card" *ngIf="accountsCategory?.name === 'Clients'">
+    <div class="card" *ngIf="categoryType?.name === 'Clients'">
         <ng-container *ngIf="products$ | async as products; else loading">
             <p-table [value]="products" stripedRows [tableStyle]="{'min-width': '50rem'}" [paginator]="true" [rows]="5"
                 [rowsPerPageOptions]="[5, 10, 20]" selectionMode="single" [(selection)]="selectedProducts"
@@ -68,7 +68,7 @@
             <app-accounts-layout-component [selectedProducts]="selectedProducts"></app-accounts-layout-component>
         </div>
     </div>
-    <div class="card" *ngIf="accountsCategory?.name === 'Prospects'">
+    <div class="card" *ngIf="categoryType?.name === 'Prospects'">
         <h1>
             Prospects Dashboard Work under construction...
         </h1>

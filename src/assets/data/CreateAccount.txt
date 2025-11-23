@@ -1,0 +1,33 @@
+CreateAccount(accountDataSet, caseId) {
+    console.log("Account Creation Started");
+
+    if (accountDataSet != null && accountDataSet.length > 0) {
+      accountDataSet.forEach((accountObj)=>{
+        const accountData =
+        {
+          "cert_account_number": accounts.clientAccountNumber,
+          "cert_asofdate": arrangements.marketValueDate,
+          "cert_valueofaccount": parseFloat(arrangements.marketValueAmount),
+          "cert_name": arrangements.businessUserArrangementName,
+          "cert_istaxreportingholder": accounts.taxFlag,
+          "cert_moneymanager": arrangements.productName,
+          "cert_accountholder_name": clientFirstName +','+ aclientLastName,
+          "cert_caseid@odata.bind": "/cert_cases(" + caseId + ")"
+        }
+        // create bidsL account record
+        Xrm.WebApi.createRecord("cert_account", accountData).then(
+          (result) => {
+            console.log("Account created with ID: " + result.id);
+            // perform operations on record creation
+          },
+          (error) => {
+            console.log(error.message);
+            // handle error conditions
+          }
+        );
+      })
+
+      
+    }
+    console.log("Account Creation Completed");
+  }
