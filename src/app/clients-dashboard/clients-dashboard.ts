@@ -32,18 +32,7 @@ export class ClientsDashboard {
   ngOnInit() {
     this.categoryType = this.categoryTypes[0];
     this.urlParams = getIframeQueryParams();
-    // this.urlParams = {
-    //   data: JSON.stringify({
-    //     "cId": "{269E5EA0-D7C7-F011-B917-000D3A1C0DFD}",
-    //     "cssId": "Riley, Julie",
-    //     "pId": "689681",
-    //     "ntlogin": "jriley1",
-    //     "clientBaseUrl": "https://searchqa.rjf.com",
-    //     "prospectBaseUrl": "https://apiqa.rjf.com",
-    //     "globalContextUrl": "http://crmdevbox:5555/CERT",
-    //     "accountBaseUrl": "https://apiqa.rjf.com"
-    //   })
-    // }
+    
     if (this.urlParams && this.urlParams?.get("data")) {
       const urlData = JSON.parse(this.urlParams.get("data") ?? '{}');
       const faUserParameters: faParameters = {
