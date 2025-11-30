@@ -17,4 +17,5 @@ export interface ClientsPayload {
 
 export interface ClientPayloadInputs {
     ntlogin?: string;
+    searchText?: string;
 }

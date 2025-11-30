@@ -10,10 +10,12 @@ import { getIframeQueryParams } from '../utils';
 import { faParameters, FaUserStore } from '../faStore';
 import { getClientsPayload } from '../clientsApiPayload';
 import { ClientsPayload } from '../types';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-clients-dashboard',
-  imports: [CommonModule, FormsModule, TableModule, AccountsLayoutComponent, RadioButtonModule],
+  imports: [CommonModule, FormsModule, TableModule, AccountsLayoutComponent, RadioButtonModule, InputTextModule, ButtonModule],
   templateUrl: './clients-dashboard.html',
   styleUrl: './clients-dashboard.scss',
 })
@@ -28,11 +30,12 @@ export class ClientsDashboard {
     { name: 'Clients', key: 'C' },
     { name: 'Prospects', key: 'P' },
   ];
+  searchText: string = '';
   constructor(private clientsDataService: ClientsDataService, private faUserStore: FaUserStore) { }
   ngOnInit() {
     this.categoryType = this.categoryTypes[0];
     this.urlParams = getIframeQueryParams();
-    
+
     if (this.urlParams && this.urlParams?.get("data")) {
       const urlData = JSON.parse(this.urlParams.get("data") ?? '{}');
       const faUserParameters: faParameters = {
@@ -49,11 +52,51 @@ export class ClientsDashboard {
         this.faUserStore.setUser(faUserParameters);
       }
       const clientsPayload: ClientsPayload = getClientsPayload({ ntlogin: faUserParameters.ntlogin ?? '' });
-      this.products$ = this.clientsDataService.getClients(clientsPayload).pipe(
-        map((data: any) => (data.response.docs as any[]).map((item: any) => {
-          return { ...item };
-        }))
-      );
+      this.getClients(clientsPayload);
     }
   }
+  getPayloadCrieria(userInput?: string) {
+    const faUserParameters = this.faUserStore.faUser();
+    const clientsPayload: ClientsPayload = getClientsPayload({ ntlogin: faUserParameters.ntlogin ?? '', searchText: userInput });
+    this.getClients(clientsPayload);
+  }
+
+  getClients(clientsPayload: ClientsPayload) {
+    this.products$ = this.clientsDataService.getClients(clientsPayload).pipe(
+      map((data: any) => (data.response.docs as any[]).map((item: any) => {
+        return { ...item };
+      }))
+    );
+  }
+  applySearch() {
+    const input = this.searchText.trim().toLowerCase();
+    if (!input) {
+      // this.filteredClients = [...this.clients];
+      return;
+    }
+    // Account number pattern: 3 digits + 2 alphanumeric + 3 digits
+    const accountPattern = /^\d{3}[A-Za-z0-9]{2}\d{3}$/;
+    if (accountPattern.test(input)) {
+      console.log('Account number search:', input);
+      const accountNumber = input;
+      this.getPayloadCrieria(accountNumber)
+      return;
+    }
+    // Name pattern: "LastName, FirstName" or partial last name
+    const nameParts = input.split(',').map(p => p.trim());
+    if (nameParts.length === 1) {
+      // Partial last name search
+      console.log('Partial last name search:', nameParts[0]);
+      this.getPayloadCrieria(nameParts[0])
+      return;
+    } else if (nameParts.length === 2) {
+      // "LastName, FirstName" partial search
+      const lastName = nameParts[0];
+      const firstName = nameParts[1];
+      console.log('Full name search - Last Name:', lastName, 'First Name:', firstName);
+      this.getPayloadCrieria(nameParts[0] + ',' + nameParts[1])
+      return
+    }
+  }
+
 }
