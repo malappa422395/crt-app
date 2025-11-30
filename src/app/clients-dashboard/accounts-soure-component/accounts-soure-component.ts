@@ -59,7 +59,7 @@ export class AccountsSoureComponent {
             faNum: arrange?.faNumber ?? '--',
             productName: arrange?.productName ?? '--',
             marketValueDate: arrange?.marketValueDate ?? '--',
-            
+
             // Clients response fields
             clientId: value?.clientId ?? '--',
             clientFirstName: value?.clientFirstName ?? '--',
@@ -70,18 +70,21 @@ export class AccountsSoureComponent {
             clientPrefix: value?.clientPrefix ?? '--',
             clientSuffix: value?.clientSuffix ?? '--',
             taxFlag: matchedAccount?.taxFlag ?? '--',
-            
+
           };
-        });
+        })?.filter((acc: any) => acc != null);
+        this.selectedAccounts = this.sourceAccounts?.filter((acc: any) => acc != null)
+          .filter((acc: any, i: number, arr: any[]) => i === arr.findIndex((a: any) => a.clientAccountNumber === acc.clientAccountNumber));
+        this.getSelectedAccounts.emit(this.selectedAccounts);
         this.cdr.detectChanges(); // prevent template change errors
       });
   }
   get selectedProducts() {
     return this._selectedProducts;
   }
+
   // Event: single row selected
   onAccountSelect(event: any) {
-    this.selectedAccounts = [event];
     this.getSelectedAccounts.emit(this.selectedAccounts);
   }
   // Event: select all rows

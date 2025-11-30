@@ -4,25 +4,48 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { faParameters, FaUserStore } from '../../faStore';
 import { MoneyManagerAccountService } from '../money-manager-account.service';
+import { ClientsModal } from "../clients-modal/clients-modal";
 declare var Xrm: any;
 @Component({
   selector: 'app-accounts-target-component',
-  imports: [CommonModule, TableModule, ButtonModule],
+  imports: [CommonModule, TableModule, ButtonModule, ClientsModal],
   templateUrl: './accounts-target-component.html',
   styleUrl: './accounts-target-component.scss'
 })
 export class AccountsTargetComponent {
-  @Input() targetAccounts: any;
+  // @Input() targetAccounts: any;
   selectedTargetAccounts!: any[];
   readonly getSelectedTargetAccounts = output<any>();
   faUserParams: faParameters | null = null;
   selectedRowData: any;
   clients: any[] = [];
+  isVissible: boolean = false;
+  private _targetAccounts: any[] = [];
+
+  @Input()
+  set targetAccounts(accounts: any[]) {
+    this._targetAccounts = accounts ?? [];
+
+    // Filter out nulls and duplicates based on clientAccountNumber
+    this.selectedTargetAccounts = this._targetAccounts
+      .filter(acc => acc != null)
+      .filter((acc, i, arr) => i === arr.findIndex(a => a.clientAccountNumber === acc.clientAccountNumber));
+    this.getSelectedTargetAccounts.emit(this.selectedTargetAccounts);
+  }
+
+  get targetAccounts() {
+    return this._targetAccounts;
+  }
+
   constructor(private faUserStore: FaUserStore, private MMAService: MoneyManagerAccountService) {
     this.faUserParams = this.faUserStore.faUser();
   }
   onAccountSelect(event: any) {
-    this.selectedTargetAccounts = event;
+    this.getSelectedTargetAccounts.emit(this.selectedTargetAccounts);
+  }
+  // Event: select all rows
+  onSelectAll(event: { originalEvent: Event; checked: boolean }) {
+    this.selectedTargetAccounts = event.checked ? [...this.targetAccounts] : [];
     this.getSelectedTargetAccounts.emit(this.selectedTargetAccounts);
   }
   createCases() {
@@ -33,6 +56,19 @@ export class AccountsTargetComponent {
       ).values()
     ];
     // Implement case creation logic here
+    if(this.clients.length === 0){
+      alert("No clients available for the selected accounts to create case.");
+      return;
+    }else if(this.clients.length > 1){
+      this.toggleModal(true);
+    }else{
+      this.selectedRowData = this.clients[0];
+      this.CreateRecord();
+    }
+  }
+  getSelectedClient(event: any) {
+    console.log(event);
+    this.selectedRowData = event;
     this.CreateRecord();
   }
   CreateRecord() {
@@ -43,7 +79,7 @@ export class AccountsTargetComponent {
       const cssId = this.faUserParams?.cssId;
       this.MMAService.CRM_BASE_URL = this.faUserParams?.globalContextUrl ?? '';
       let certtitle: string = '';
-      this.selectedRowData = this.selectedTargetAccounts?.[0];
+      // this.selectedRowData = this.selectedTargetAccounts?.[0];
       if (this.selectedRowData) {
         if (this.selectedRowData.clientLastName) {
           certtitle = this.selectedRowData.clientLastName + ', ' + this.selectedRowData.clientFirstName + " - " + cssId;
@@ -145,10 +181,6 @@ export class AccountsTargetComponent {
       }
     );
   }
-
-
-
-
   OpenCaseForm(caseId: any) {
     const entityFormOptions: any = {};
     entityFormOptions["entityName"] = "cert_case";
@@ -182,7 +214,9 @@ export class AccountsTargetComponent {
           "cert_istaxreportingholder": parseInt(accountObj?.taxFlag) === 1 ? true : false,
           "cert_moneymanager": accountObj.productName,
           "cert_accountholder_name": certAccountholderName,
-          "cert_caseid@odata.bind": "/cert_cases(" + caseId + ")"
+          "cert_caseid@odata.bind": "/cert_cases(" + caseId + ")",
+          "cert_clientid": accountObj?.clientId,//check for null
+          "cert_fpn": accountObj?.clientFriendlyPartyNum,//check for null
         }
         // create bidsL account record
         Xrm.WebApi.createRecord("cert_account", accountData).then(
@@ -234,6 +268,10 @@ export class AccountsTargetComponent {
         );
       })
     }
+  }
+
+  toggleModal(value: any) {
+    this.isVissible = value;
   }
 
 }
