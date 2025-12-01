@@ -12,10 +12,11 @@ import { getClientsPayload } from '../clientsApiPayload';
 import { ClientsPayload } from '../types';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { ProspectDashboard } from "../prospect-dashboard/prospect-dashboard";
 
 @Component({
   selector: 'app-clients-dashboard',
-  imports: [CommonModule, FormsModule, TableModule, AccountsLayoutComponent, RadioButtonModule, InputTextModule, ButtonModule],
+  imports: [CommonModule, FormsModule, TableModule, AccountsLayoutComponent, RadioButtonModule, InputTextModule, ButtonModule, ProspectDashboard],
   templateUrl: './clients-dashboard.html',
   styleUrl: './clients-dashboard.scss',
 })

@@ -1,0 +1,19 @@
+<form #clientForm="ngForm" (ngSubmit)="submitForm(clientForm)"
+    class="flex flex-col items-center justify-center gap-3">
+    <div class="flex flex-row gap-3">
+        <label for="clientFirstName">First Name :</label>
+        <input id="clientFirstName" pInputText name="clientFirstName" [(ngModel)]="client.clientFirstName" required />
+    </div>
+    <div class="flex flex-row gap-3">
+        <label for="clientLastName">Last Name :</label>
+        <input id="clientLastName" pInputText name="clientLastName" [(ngModel)]="client.clientLastName" required />
+    </div>
+    <div class="flex flex-row gap-2">
+        <label for="clientMiddleName">Middle Name :</label>
+        <input id="clientMiddleName" pInputText name="clientMiddleName" [(ngModel)]="client.clientMiddleName" />
+    </div>
+    <div class="flex flex-row gap-2">
+        <button pButton type="button" label="Reset" icon="pi pi-refresh" (click)="resetForm(clientForm)"></button>
+        <button pButton type="submit" label="Submit" icon="pi pi-send" [disabled]="clientForm.invalid"></button>
+    </div>
+</form>
