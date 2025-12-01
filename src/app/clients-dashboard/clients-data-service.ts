@@ -12,15 +12,15 @@ export class ClientsDataService {
   private accountsWithMarketValueJsonFilePath = 'https://raw.githubusercontent.com/malappa422395/crt-app/refs/heads/master/src/assets/data/accounts.json';
   constructor(private http: HttpClient, private faUserStore: FaUserStore) { }
   getClients(clientsPayload: ClientsPayload) {
-    return this.http.post(this.faUserStore.faUser()?.clientBaseUrl, clientsPayload, { withCredentials: true }).pipe(
-    // return this.http.get<any>(this.clientsJsonFilePath).pipe(
+   return this.http.post(this.faUserStore.faUser()?.clientBaseUrl, clientsPayload, { withCredentials: true }).pipe(
+  // return this.http.get<any>(this.clientsJsonFilePath).pipe(
         retry(2),
         catchError(this.handleError)
       )
   }
   getAccountsWithMarketValue(accountNumbers: string[]) {
     console.log('Fetching market values for accounts:', accountNumbers);
-    return this.http.post(this.faUserStore.faUser()?.accountBaseUrl, accountNumbers, { withCredentials: true }).pipe(
+    return this.http.post(this.faUserStore.faUser()?.accountBaseUrl,  { accountNumbers }, { withCredentials: true }).pipe(
     // return this.http.get<any>(this.accountsWithMarketValueJsonFilePath).pipe(
         retry(2),
         catchError(this.handleError)

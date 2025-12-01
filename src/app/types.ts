@@ -17,5 +17,17 @@ export interface ClientsPayload {
 
 export interface ClientPayloadInputs {
     ntlogin?: string;
-    searchText?: string;
+    searchText?: string | undefined;
+}
+export interface AccounstData {
+    cert_account_number?: string;
+    cert_name?: string;
+    cert_istaxreportingholder?: boolean;
+    cert_moneymanager?: string;
+    cert_accountholder_name?: string;
+    'cert_caseid@odata.bind'?: string;
+    cert_clientid?: string;
+    cert_fpn?: string;
+    cert_asofdate?: string;
+    cert_valueofaccount?: number;
 }

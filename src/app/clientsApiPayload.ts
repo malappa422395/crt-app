@@ -7,7 +7,7 @@ export const getClientsPayload = (clientPayloadInputs: ClientPayloadInputs): Cli
     },
     searchParams: {
         q: [
-            "o"
+            clientPayloadInputs?.searchText ?? "o"
         ],
         rows: [
             "2000"

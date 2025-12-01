@@ -51,7 +51,7 @@ export class ClientsDashboard {
       if (faUserParameters) {
         this.faUserStore.setUser(faUserParameters);
       }
-      const clientsPayload: ClientsPayload = getClientsPayload({ ntlogin: faUserParameters.ntlogin ?? '' });
+      const clientsPayload: ClientsPayload = getClientsPayload({ ntlogin: faUserParameters.ntlogin ?? '', searchText: "o"});
       this.getClients(clientsPayload);
     }
   }
@@ -71,32 +71,25 @@ export class ClientsDashboard {
   applySearch() {
     const input = this.searchText.trim().toLowerCase();
     if (!input) {
-      // this.filteredClients = [...this.clients];
+      alert('Please enter a valid search input.');
       return;
     }
     // Account number pattern: 3 digits + 2 alphanumeric + 3 digits
     const accountPattern = /^\d{3}[A-Za-z0-9]{2}\d{3}$/;
     if (accountPattern.test(input)) {
       console.log('Account number search:', input);
-      const accountNumber = input;
-      this.getPayloadCrieria(accountNumber)
+      this.getPayloadCrieria(input)
       return;
     }
-    // Name pattern: "LastName, FirstName" or partial last name
     const nameParts = input.split(',').map(p => p.trim());
     if (nameParts.length === 1) {
-      // Partial last name search
       console.log('Partial last name search:', nameParts[0]);
       this.getPayloadCrieria(nameParts[0])
       return;
     } else if (nameParts.length === 2) {
-      // "LastName, FirstName" partial search
-      const lastName = nameParts[0];
-      const firstName = nameParts[1];
-      console.log('Full name search - Last Name:', lastName, 'First Name:', firstName);
-      this.getPayloadCrieria(nameParts[0] + ',' + nameParts[1])
+      console.log('Full name search - Last Name:', nameParts[0], 'First Name:', nameParts[1]);
+      this.getPayloadCrieria(nameParts[0] + ', ' + nameParts[1])
       return
     }
   }
-
 }

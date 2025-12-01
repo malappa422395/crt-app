@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { faParameters, FaUserStore } from '../../faStore';
 import { MoneyManagerAccountService } from '../money-manager-account.service';
 import { ClientsModal } from "../clients-modal/clients-modal";
+import { AccounstData } from '../../types';
 declare var Xrm: any;
 @Component({
   selector: 'app-accounts-target-component',
@@ -56,12 +57,12 @@ export class AccountsTargetComponent {
       ).values()
     ];
     // Implement case creation logic here
-    if(this.clients.length === 0){
+    if (this.clients.length === 0) {
       alert("No clients available for the selected accounts to create case.");
       return;
-    }else if(this.clients.length > 1){
+    } else if (this.clients.length > 1) {
       this.toggleModal(true);
-    }else{
+    } else {
       this.selectedRowData = this.clients[0];
       this.CreateRecord();
     }
@@ -205,18 +206,24 @@ export class AccountsTargetComponent {
         if (accountObj?.friendlyPartyNum === accountObj?.clientFriendlyPartyNum) {
           certAccountholderName = accountObj.clientFirstName + ',' + accountObj.clientLastName;
         }
-        const accountData =
+        const valueOfAccount = parseFloat(accountObj.marketValue);
+        let accountData: AccounstData =
         {
-          "cert_account_number": accountObj.clientAccountNumber,
-          "cert_asofdate": accountObj.marketValueDate,
-          "cert_valueofaccount": parseFloat(accountObj.marketValue),
-          "cert_name": accountObj.accountName,
-          "cert_istaxreportingholder": parseInt(accountObj?.taxFlag) === 1 ? true : false,
-          "cert_moneymanager": accountObj.productName,
-          "cert_accountholder_name": certAccountholderName,
-          "cert_caseid@odata.bind": "/cert_cases(" + caseId + ")",
-          "cert_clientid": accountObj?.clientId,//check for null
-          "cert_fpn": accountObj?.clientFriendlyPartyNum,//check for null
+          cert_account_number: accountObj.clientAccountNumber,
+          cert_name: accountObj.accountName,
+          cert_istaxreportingholder: parseInt(accountObj?.taxFlag) === 1 ? true : false,
+          cert_moneymanager: accountObj.productName,
+          cert_accountholder_name: certAccountholderName,
+          'cert_caseid@odata.bind': "/cert_cases(" + caseId + ")",
+          cert_clientid: accountObj?.clientId,//check for null
+          cert_fpn: accountObj?.friendlyPartyNum,//check for null
+        }
+        if (!isNaN(valueOfAccount)) {
+          accountData = {
+            ...accountData,
+            cert_asofdate: accountObj.marketValueDate,
+            cert_valueofaccount: valueOfAccount,
+          };
         }
         // create bidsL account record
         Xrm.WebApi.createRecord("cert_account", accountData).then(
