@@ -4,9 +4,12 @@
     </div>
     <div class="button-group w-full md:w-1/5">
         <button pButton icon="pi pi-chevron-right" label="Add" (click)="addAccounts()"></button>
-        <button pButton icon="pi pi-chevron-left" label="Remove" (click)="removeTargetAccounts()"></button>
+        <button pButton icon="pi pi-chevron-left" label="Remove" (click)="confirmDelete()"></button>
     </div>
     <div class="card w-full md:w-2/5 min-h-96">
         <app-accounts-target-component [targetAccounts]="targetAccounts" (getSelectedTargetAccounts)="getSelectedTargetAccounts($event)"></app-accounts-target-component>
+    </div>
+    <div>
+        <p-confirmdialog />
     </div>
 </div>

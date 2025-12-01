@@ -4,18 +4,22 @@ import { AccountsTargetComponent } from "../accounts-target-component/accounts-t
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { ClientsModal } from '../clients-modal/clients-modal';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-accounts-layout-component',
-  imports: [AccountsSoureComponent, AccountsTargetComponent, ButtonModule, CommonModule],
+  imports: [AccountsSoureComponent, AccountsTargetComponent, ButtonModule, CommonModule, ConfirmDialogModule],
   templateUrl: './accounts-layout-component.html',
-  styleUrls: ['./accounts-layout-component.scss']
+  styleUrls: ['./accounts-layout-component.scss'],
+  providers: [ConfirmationService],
 })
 export class AccountsLayoutComponent {
   @Input() selectedProducts: any;
   selectedAccounts: any;
   targetAccounts: Array<any> = [];
   selectedTargetAccounts: any;
+  constructor(private confirmationService: ConfirmationService) { }
   addAccounts() {
     this.targetAccounts = [
       ...this.targetAccounts,
@@ -43,5 +47,21 @@ export class AccountsLayoutComponent {
     this.targetAccounts = this.targetAccounts.filter(
       acc => !this.selectedTargetAccounts?.some((selAcc: any) => selAcc.clientAccountNumber === acc.clientAccountNumber)
     );
+  }
+  confirmDelete() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete accounts?',
+      header: 'Confirm Delete',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
+      accept: () => {
+        console.log('Item deleted');
+        this.removeTargetAccounts();
+      },
+      reject: () => {
+        console.log('Canceled');
+      }
+    });
   }
 }
