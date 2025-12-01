@@ -33,6 +33,7 @@ export class ClientsDashboard {
   searchText: string = '';
   constructor(private clientsDataService: ClientsDataService, private faUserStore: FaUserStore) { }
   ngOnInit() {
+    this.searchText = '';
     this.categoryType = this.categoryTypes[0];
     this.urlParams = getIframeQueryParams();
 
@@ -55,10 +56,17 @@ export class ClientsDashboard {
       this.getClients(clientsPayload);
     }
   }
+  reloadDataDefault() {
+    const faUserParameters = this.faUserStore.faUser();
+    const clientsPayload: ClientsPayload = getClientsPayload({ ntlogin: faUserParameters.ntlogin ?? '', searchText: "o" });
+    this.getClients(clientsPayload);
+    this.searchText = '';
+  }
   getPayloadCrieria(userInput?: string) {
     const faUserParameters = this.faUserStore.faUser();
     const clientsPayload: ClientsPayload = getClientsPayload({ ntlogin: faUserParameters.ntlogin ?? '', searchText: userInput });
     this.getClients(clientsPayload);
+    this.searchText = '';
   }
 
   getClients(clientsPayload: ClientsPayload) {
