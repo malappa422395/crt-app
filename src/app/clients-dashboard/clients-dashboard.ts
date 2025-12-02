@@ -28,8 +28,8 @@ export class ClientsDashboard {
   categoryType!: { name: string; key: string };
   urlParams: any;
   categoryTypes: any[] = [
-    { name: 'Clients', key: 'C' },
-    { name: 'Prospects', key: 'P' },
+    { name: 'Client', key: 'C' },
+    { name: 'Prospect', key: 'P' },
   ];
   searchText: string = '';
   constructor(private clientsDataService: ClientsDataService, private faUserStore: FaUserStore) { }

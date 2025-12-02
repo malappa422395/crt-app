@@ -55,7 +55,7 @@
 
     </div>
     <div class="flex flex-row justify-center mt-2">
-        <button pButton label="Create Case(s)" (click)="createCases()"></button>
+        <button pButton label="Create Case(s)" icon="pi pi-save" (click)="createCases()"></button>
     </div>
     <div *ngIf="isVissible">
         <app-clients-modal [visible]="isVissible" [clients]="clients" (openModal)="toggleModal($event)" (closeModal)="toggleModal($event)" (getSelectedClient)="getSelectedClient($event)"></app-clients-modal>

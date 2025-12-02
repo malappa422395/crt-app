@@ -4,7 +4,7 @@ import { map, Observable } from 'rxjs';
 import { faParameters, FaUserStore } from '../../faStore';
 import { ProspectDataService } from '../prospect-data-service';
 import { CommonModule } from '@angular/common';
-import { ClientsPayload } from '../../types';
+import { ClientsPayload, ProspectData } from '../../types';
 import { getProspectPayload } from '../../prospectApiPayload';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -29,11 +29,7 @@ export class ProspectTable implements OnInit {
     this.faUserParams = this.faUserStore.faUser();
   }
   ngOnInit() {
-    const clientsPayload = {
-      ntlogin: this.faUserStore.faUser()?.ntlogin || '',
-      searchText: 'o'
-    };
-    this.getProspects(clientsPayload);
+    this.reloadProspectsDefault()
   }
 
   getProspects(clientsPayload: any) {
@@ -135,7 +131,7 @@ export class ProspectTable implements OnInit {
         console.log(error);
       });
   }
-  createProspect(prospectClient: { clientDateOfBirth: string | number | Date; clientFirstName: any; clientLastName: any; clientMiddleName: any; clientSuffix: any; clientPrefix: any; }, caseId: string) {
+  createProspect(prospectClient: ProspectData, caseId: string) {
     let dob = '';
     if (prospectClient.clientDateOfBirth) {
       const date = new Date(prospectClient.clientDateOfBirth);
@@ -149,6 +145,8 @@ export class ProspectTable implements OnInit {
       "cert_name": prospectClient.clientLastName,
       "cert_middlename": prospectClient.clientMiddleName,
       "cert_suffix": prospectClient.clientSuffix,
+      "cert_clientid": prospectClient.clientId,//check for null
+      "cert_fpn": prospectClient.friendlyPartyNum,//check for null
       "cert_clienttype": 690480001,
       "cert_prefix": prospectClient.clientPrefix,
       "cert_caseid@odata.bind": "/cert_cases(" + caseId + ")"
@@ -168,6 +166,10 @@ export class ProspectTable implements OnInit {
 
   createProspectRecord() {
     console.log('Creating prospect for:', this.selectedProspect);
+    if (!this.selectedProspect) {
+      alert('No prospect selected to create case.');
+      return;
+    }
     // Implement the logic to create a prospect here
     if (this.faUserParams) {
       const contactId = this.faUserParams?.cId;

@@ -31,3 +31,11 @@ export interface AccounstData {
     cert_asofdate?: string;
     cert_valueofaccount?: number;
 }
+export interface ProspectData {
+    clientDateOfBirth: string | number | Date;
+    clientFirstName: any; clientLastName: any;
+    clientMiddleName: any; clientSuffix: any;
+    clientPrefix: any;
+    clientId: any; friendlyPartyNum: any;
+    legalEntity?: any;
+}
