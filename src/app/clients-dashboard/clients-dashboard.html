@@ -2,7 +2,7 @@
     <div>
         <div class="flex flex-row items-center justify-center gap-2 mt-4">
             <div class="font-bold self-center">
-                Please select category
+                Please Select Engagement Type:
             </div>
             <div class="flex flex-row gap-2">
                 <div *ngFor="let category of categoryTypes" class="field-checkbox">
@@ -16,11 +16,11 @@
     <div class="card" *ngIf="categoryType?.name === 'Clients'">
         <div class="flex flex-row items-center justify-center gap-2 mt-4">
             <div class="font-bold self-center">
-                Search By Account / Client:
+                Search By Client Name / Account Number:
             </div>
             <div class="flex flex-row gap-2">
                 <div>
-                    <input type="text" pInputText placeholder="Search By Account / Client Name" [(ngModel)]="searchText"
+                    <input type="text" pInputText placeholder="Client Name / Account Number" [(ngModel)]="searchText"
                         class="w-68" />
                 </div>
                 <div>
