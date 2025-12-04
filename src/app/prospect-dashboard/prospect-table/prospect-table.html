@@ -63,7 +63,7 @@
                     <ng-template pTemplate="body" let-prospect>
                         <tr [pSelectableRow]="prospect">
                             <td>{{prospect.clientLastName ?? '--'}}</td>
-                            <td>{{prospect.clientFirstName || prospect.legalentity || '--'}}</td>
+                            <td>{{prospect.clientFirstName || prospect.legalEntity || '--'}}</td>
                             <td>{{prospect.clientTelNumber ?? '--'}}</td>
                             <td>{{prospect.fas[0].faNum ?? '--'}}</td>
                             <td>{{prospect.fas[0].faDisplayName ?? '--'}}</td>

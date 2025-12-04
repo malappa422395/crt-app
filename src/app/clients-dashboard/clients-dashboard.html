@@ -72,7 +72,7 @@
                     <ng-template pTemplate="body" let-product>
                         <tr [pSelectableRow]="product">
                             <td>{{product.clientLastName ?? '--'}}</td>
-                            <td>{{product.clientFirstName || product.legalentity || '--'}}</td>
+                            <td>{{product.clientFirstName || product.legalEntity || '--'}}</td>
                             <td>{{product.clientTelNumber ?? '--'}}</td>
                             <td>{{product.fas[0].faNum ?? '--'}}</td>
                             <td>{{product.fas[0].faDisplayName ?? '--'}}</td>
