@@ -72,7 +72,7 @@ export class ProspectTable implements OnInit {
     }
   }
   reloadProspectsDefault() {
-    const clientsPayload: ClientsPayload = getProspectPayload({ ntlogin: this.faUserParams?.ntlogin ?? '', searchText: "o" });
+    const clientsPayload: ClientsPayload = getProspectPayload({ ntlogin: this.faUserParams?.ntlogin ?? '', searchText: "" });
     this.getProspects(clientsPayload);
     this.searchText = '';
   }

@@ -3,11 +3,11 @@ import { ClientPayloadInputs, ClientsPayload } from "./types";
 export const getProspectPayload = (clientPayloadInputs: ClientPayloadInputs): ClientsPayload => ({
     authContext: {
         applicationId: "ClientCenter",
-        impersonatedUserID: clientPayloadInputs?.ntlogin ?? ""
+        impersonatedUserId: clientPayloadInputs?.ntlogin ?? ""
     },
     searchParams: {
         q: [
-            clientPayloadInputs?.searchText ?? "o"
+            clientPayloadInputs?.searchText ?? ""
         ],
         rows: [
             "2000"

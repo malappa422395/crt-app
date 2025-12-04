@@ -53,13 +53,13 @@ export class ClientsDashboard {
       if (faUserParameters) {
         this.faUserStore.setUser(faUserParameters);
       }
-      const clientsPayload: ClientsPayload = getClientsPayload({ ntlogin: faUserParameters.ntlogin ?? '', searchText: "o"});
+      const clientsPayload: ClientsPayload = getClientsPayload({ ntlogin: faUserParameters.ntlogin ?? '', searchText: ""});
       this.getClients(clientsPayload);
     }
   }
   reloadDataDefault() {
     const faUserParameters = this.faUserStore.faUser();
-    const clientsPayload: ClientsPayload = getClientsPayload({ ntlogin: faUserParameters.ntlogin ?? '', searchText: "o" });
+    const clientsPayload: ClientsPayload = getClientsPayload({ ntlogin: faUserParameters.ntlogin ?? '', searchText: "" });
     this.getClients(clientsPayload);
     this.searchText = '';
   }

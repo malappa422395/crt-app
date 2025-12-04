@@ -154,8 +154,8 @@ export class AccountsTargetComponent {
       title = this.selectedRowData.clientFirstName + " - " + cssid;
     }
     const secondaryClients = this.selectedTargetAccounts?.filter((acc: any) => acc.clientId !== this.selectedRowData.clientId)
-    const secondaryClientIds = secondaryClients?.map((acc: any) => acc.clientId).join(' : ');
-    const friendlyPartyNum = secondaryClients?.map((acc: any) => acc.clientFriendlyPartyNum).join(' : ');
+    const secondaryClientIds = [...new Set(secondaryClients?.map((acc: any) => acc.clientId))].join(' : ');
+    const friendlyPartyNum = [...new Set(secondaryClients?.map((acc: any) => acc.clientFriendlyPartyNum))].join(' : ');
     const totalMarketValue = this.selectedTargetAccounts?.reduce((acc: number, curr: any) => acc + parseFloat(curr.marketValue), 0);
     console.log("Total Market Value: " + totalMarketValue);
     const caseData =

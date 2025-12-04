@@ -39,22 +39,21 @@
                     [(selection)]="selectedProducts" dataKey="clientId">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th pSortableColumn="clientFirstName">First Name</th>
                             <th pSortableColumn="clientLastName">Last Name</th>
+                            <th pSortableColumn="clientFirstName">First Name</th>                            
                             <th pSortableColumn="clientTelNumber">Telephone Number</th>
                             <th pSortableColumn="fas[0].faNum">FA Number</th>
                             <th pSortableColumn="fas[0].faDisplayName">FA Name</th>
                         </tr>
                         <tr>
                             <th>
-                                <p-columnFilter type="text" field="clientFirstName" placeholder="Search By First Name"
-                                    ariaLabel="Filter Client First Name" filterOn="input"></p-columnFilter>
-                            </th>
-                            <th>
                                 <p-columnFilter type="text" field="clientLastName" placeholder="Search By Last Name"
                                     ariaLabel="Filter Client Last Name"></p-columnFilter>
                             </th>
-                            
+                            <th>
+                                <p-columnFilter type="text" field="clientFirstName" placeholder="Search By First Name"
+                                    ariaLabel="Filter Client First Name" filterOn="input"></p-columnFilter>
+                            </th>
                             <th>
                                 <p-columnFilter type="text" field="clientTelNumber" placeholder="Search By Telephone Number"
                                     ariaLabel="Filter Client Telephone Number"></p-columnFilter>
@@ -72,8 +71,8 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-product>
                         <tr [pSelectableRow]="product">
-                            <td>{{product.clientFirstName ?? '--'}}</td>
                             <td>{{product.clientLastName ?? '--'}}</td>
+                            <td>{{product.clientFirstName || product.legalentity || '--'}}</td>
                             <td>{{product.clientTelNumber ?? '--'}}</td>
                             <td>{{product.fas[0].faNum ?? '--'}}</td>
                             <td>{{product.fas[0].faDisplayName ?? '--'}}</td>

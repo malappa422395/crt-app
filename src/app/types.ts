@@ -1,7 +1,7 @@
 export interface ClientsPayload {
     authContext: {
         applicationId: string;
-        impersonatedUserID: string;
+        impersonatedUserId: string;
     };
     searchParams: {
         q: string[];
