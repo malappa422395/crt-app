@@ -13,12 +13,15 @@ import { ClientsPayload } from '../types';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { ProspectDashboard } from "../prospect-dashboard/prospect-dashboard";
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialog } from "primeng/confirmdialog";
 
 @Component({
   selector: 'app-clients-dashboard',
-  imports: [CommonModule, FormsModule, TableModule, AccountsLayoutComponent, RadioButtonModule, InputTextModule, ButtonModule, ProspectDashboard],
+  imports: [CommonModule, FormsModule, TableModule, AccountsLayoutComponent, RadioButtonModule, InputTextModule, ButtonModule, ProspectDashboard, ConfirmDialog],
   templateUrl: './clients-dashboard.html',
   styleUrl: './clients-dashboard.scss',
+  providers: [ConfirmationService],
 })
 
 export class ClientsDashboard {
@@ -32,7 +35,7 @@ export class ClientsDashboard {
     { name: 'Prospect', key: 'P' },
   ];
   searchText: string = '';
-  constructor(private clientsDataService: ClientsDataService, private faUserStore: FaUserStore) { }
+  constructor(private clientsDataService: ClientsDataService, private faUserStore: FaUserStore, private confirmationService: ConfirmationService) { }
   ngOnInit() {
     this.searchText = '';
     this.categoryType = this.categoryTypes[0];
@@ -80,7 +83,7 @@ export class ClientsDashboard {
   applySearch() {
     const input = this.searchText.trim().toLowerCase();
     if (!input) {
-      alert('Please enter a valid search input.');
+      this.confirmModal({message: 'Please enter a valid search input.', header: 'Message'});
       return;
     }
     // Account number pattern: 3 digits + 2 alphanumeric + 3 digits
@@ -100,5 +103,18 @@ export class ClientsDashboard {
       this.getPayloadCrieria(nameParts[0] + ', ' + nameParts[1])
       return
     }
+  }
+
+   confirmModal(modalObj:{message:string, header:string}) {
+    this.confirmationService.confirm({
+      message: modalObj.message,
+      header: modalObj.header,
+      icon: 'pi pi-info-circle',
+      acceptLabel: 'OK',
+      rejectVisible: false,
+      accept: () => {
+        console.log('Item ok');
+      },
+    });
   }
 }

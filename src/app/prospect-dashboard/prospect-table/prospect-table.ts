@@ -11,6 +11,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MoneyManagerAccountService } from '../../clients-dashboard/money-manager-account.service';
 import { ProspectForm } from "../prospect-form/prospect-form";
+import { ConfirmationService } from 'primeng/api';
 declare var Xrm: any;
 @Component({
   selector: 'app-prospect-table',
@@ -25,7 +26,11 @@ export class ProspectTable implements OnInit {
   searchText: string = '';
   isAddNewProspectFormVisible: boolean = false;
   faUserParams: faParameters | null = null;;
-  constructor(private prospectsDataService: ProspectDataService, private faUserStore: FaUserStore, private MMAService: MoneyManagerAccountService) {
+  constructor(private prospectsDataService: ProspectDataService, 
+    private faUserStore: FaUserStore, 
+    private MMAService: MoneyManagerAccountService,
+    private confirmationService: ConfirmationService
+  ) {
     this.faUserParams = this.faUserStore.faUser();
   }
   ngOnInit() {
@@ -50,7 +55,7 @@ export class ProspectTable implements OnInit {
   applyProspectSearch() {
     const input = this.searchText.trim().toLowerCase();
     if (!input) {
-      alert('Please enter a valid search input.');
+      this.confirmModal({ message: 'Please enter a valid search input.', header: 'Message' });
       return;
     }
     // Account number pattern: 3 digits + 2 alphanumeric + 3 digits
@@ -167,7 +172,7 @@ export class ProspectTable implements OnInit {
   createProspectRecord() {
     console.log('Creating prospect for:', this.selectedProspect);
     if (!this.selectedProspect) {
-      alert('No prospect selected to create case.');
+      this.confirmModal({ message: 'No prospect selected to create case.', header: 'Message' });
       return;
     }
     // Implement the logic to create a prospect here
@@ -198,7 +203,7 @@ export class ProspectTable implements OnInit {
               }
             })
             if (isduplicate) {
-              alert("A case already exist.")
+              this.confirmModal({ message: 'A case already exist.', header: 'Message' });
             } else {
               if (this.selectedProspect) {
                 if (!contactId) {
@@ -246,5 +251,19 @@ export class ProspectTable implements OnInit {
   }
   OnSubmitRecords() {
     this.createProspectRecord();
+  }
+
+  // Alerts
+  confirmModal(modalObj: { message: string, header: string }) {
+    this.confirmationService.confirm({
+      message: modalObj.message,
+      header: modalObj.header,
+      icon: 'pi pi-info-circle',
+      acceptLabel: 'OK',
+      rejectVisible: false,
+      accept: () => {
+        console.log('Item ok');
+      },
+    });
   }
 }

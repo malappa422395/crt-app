@@ -6,6 +6,7 @@ import { faParameters, FaUserStore } from '../../faStore';
 import { MoneyManagerAccountService } from '../money-manager-account.service';
 import { ClientsModal } from "../clients-modal/clients-modal";
 import { AccounstData } from '../../types';
+import { ConfirmationService } from 'primeng/api';
 declare var Xrm: any;
 @Component({
   selector: 'app-accounts-target-component',
@@ -38,7 +39,7 @@ export class AccountsTargetComponent {
     return this._targetAccounts;
   }
 
-  constructor(private faUserStore: FaUserStore, private MMAService: MoneyManagerAccountService) {
+  constructor(private faUserStore: FaUserStore, private MMAService: MoneyManagerAccountService, private confirmationService: ConfirmationService) {
     this.faUserParams = this.faUserStore.faUser();
   }
   onAccountSelect(event: any) {
@@ -58,7 +59,7 @@ export class AccountsTargetComponent {
     ];
     // Implement case creation logic here
     if (this.clients.length === 0) {
-      alert("No clients available for the selected accounts to create case.");
+      this.confirmModal({ message: 'No clients available for the selected accounts to create case.', header: 'Message' });
       return;
     } else if (this.clients.length > 1) {
       this.toggleModal(true);
@@ -97,7 +98,7 @@ export class AccountsTargetComponent {
               }
             })
             if (isduplicate) {
-              alert("A case already exist.")
+              this.confirmModal({ message: 'A case already exist.', header: 'Message' });
             } else {
               if (this.selectedRowData && this.selectedTargetAccounts) {
                 if (!contactId) {
@@ -279,6 +280,19 @@ export class AccountsTargetComponent {
 
   toggleModal(value: any) {
     this.isVissible = value;
+  }
+
+  confirmModal(modalObj: { message: string, header: string }) {
+    this.confirmationService.confirm({
+      message: modalObj.message,
+      header: modalObj.header,
+      icon: 'pi pi-info-circle',
+      acceptLabel: 'OK',
+      rejectVisible: false,
+      accept: () => {
+        console.log('Item ok');
+      },
+    });
   }
 
 }
