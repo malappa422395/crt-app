@@ -7,10 +7,12 @@ import { MoneyManagerAccountService } from '../money-manager-account.service';
 import { ClientsModal } from "../clients-modal/clients-modal";
 import { AccounstData } from '../../types';
 import { ConfirmationService } from 'primeng/api';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { FormsModule } from '@angular/forms';
 declare var Xrm: any;
 @Component({
   selector: 'app-accounts-target-component',
-  imports: [CommonModule, TableModule, ButtonModule, ClientsModal],
+  imports: [CommonModule, TableModule, ButtonModule, ToggleSwitchModule, ClientsModal, FormsModule],
   templateUrl: './accounts-target-component.html',
   styleUrl: './accounts-target-component.scss'
 })
@@ -26,13 +28,18 @@ export class AccountsTargetComponent {
 
   @Input()
   set targetAccounts(accounts: any[]) {
-    this._targetAccounts = accounts ?? [];
+    this._targetAccounts = (accounts ?? [])
+      .filter(acc => acc != null)
+      .filter((acc, i, arr) => i === arr.findIndex(a => a.clientAccountNumber === acc.clientAccountNumber)).map(acc => ({
+        ...acc,
+        isInclude: true   // 👈 Add new property here
+      }));
 
     // Filter out nulls and duplicates based on clientAccountNumber
-    this.selectedTargetAccounts = this._targetAccounts
-      .filter(acc => acc != null)
-      .filter((acc, i, arr) => i === arr.findIndex(a => a.clientAccountNumber === acc.clientAccountNumber));
-    this.getSelectedTargetAccounts.emit(this.selectedTargetAccounts);
+    // this.selectedTargetAccounts = this._targetAccounts
+    //   .filter(acc => acc != null)
+    //   .filter((acc, i, arr) => i === arr.findIndex(a => a.clientAccountNumber === acc.clientAccountNumber));
+    // this.getSelectedTargetAccounts.emit(this.selectedTargetAccounts);
   }
 
   get targetAccounts() {
@@ -41,6 +48,11 @@ export class AccountsTargetComponent {
 
   constructor(private faUserStore: FaUserStore, private MMAService: MoneyManagerAccountService, private confirmationService: ConfirmationService) {
     this.faUserParams = this.faUserStore.faUser();
+  }
+
+  onToggleChange(event: any, account: any) {
+    account.isInclude = event.checked;
+    this.getSelectedTargetAccounts.emit(this.selectedTargetAccounts);
   }
   onAccountSelect(event: any) {
     this.getSelectedTargetAccounts.emit(this.selectedTargetAccounts);
@@ -218,6 +230,7 @@ export class AccountsTargetComponent {
           'cert_caseid@odata.bind': "/cert_cases(" + caseId + ")",
           cert_clientid: accountObj?.clientId,//check for null
           cert_fpn: accountObj?.friendlyPartyNum,//check for null
+          cert_isinclude: accountObj.isInclude,
         }
         if (!isNaN(valueOfAccount)) {
           accountData = {

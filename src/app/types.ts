@@ -30,6 +30,7 @@ export interface AccounstData {
     cert_fpn?: string;
     cert_asofdate?: string;
     cert_valueofaccount?: number;
+    cert_isinclude?: boolean;
 }
 export interface ProspectData {
     clientDateOfBirth: string | number | Date;
