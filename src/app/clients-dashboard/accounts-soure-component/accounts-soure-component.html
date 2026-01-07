@@ -17,9 +17,9 @@
                         <p-columnFilter type="text" field="accountName" placeholder="Search By Account Name"
                             ariaLabel="Filter Account Name" filterOn="input"></p-columnFilter>
                     </th>
-                    <th>
-                        <p-columnFilter type="text" field="clientAccountNumber" placeholder="Search By Account Number"
-                            ariaLabel="Filter Account Number"></p-columnFilter>
+                    <th [className]="'account-col'">
+                        <p-columnFilter type="text" field="clientAccountNumber" placeholder="Search By Acc No"
+                            ariaLabel="Filter Account Number" [className]="'account-filter'"></p-columnFilter>
                     </th>
                     <th colspan="1"></th>
                     <th colspan="1"></th>

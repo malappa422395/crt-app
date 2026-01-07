@@ -1,0 +1,13 @@
+.account-col {
+  width: 230px;
+  display: inline-block;
+}
+
+
+::ng-deep .account-filter {
+  width: 230px !important;
+}
+
+::ng-deep .account-filter input {
+  width: 100% !important;
+}
