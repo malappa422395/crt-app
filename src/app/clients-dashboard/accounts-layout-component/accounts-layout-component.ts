@@ -50,8 +50,8 @@ export class AccountsLayoutComponent {
   }
   confirmDelete() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete accounts?',
-      header: 'Confirm Delete',
+      message: 'Are you sure you want to remove the selected account(s) from this list?',
+      header: 'Remove Account(s)',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Yes',
       rejectLabel: 'No',

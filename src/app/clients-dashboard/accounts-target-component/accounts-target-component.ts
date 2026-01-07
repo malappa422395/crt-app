@@ -71,7 +71,7 @@ export class AccountsTargetComponent {
     ];
     // Implement case creation logic here
     if (this.clients.length === 0) {
-      this.confirmModal({ message: 'No clients available for the selected accounts to create case.', header: 'Message' });
+      this.confirmModal({ message: 'Please select at least one account to create a case.', header: 'No Accounts Selected' });
       return;
     } else if (this.clients.length > 1) {
       this.toggleModal(true);

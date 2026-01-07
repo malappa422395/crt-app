@@ -41,7 +41,7 @@
                         <td><p-toggleswitch [ngModel]="account.isInclude" (onChange)="onToggleChange($event, account)" /></td>
                         <td>{{account.accountName}}</td>
                         <td>{{account.clientAccountNumber}}</td>
-                        <td>{{account.marketValue}}</td>
+                        <td>{{account.marketValue | currency:'USD':'symbol':'1.2-2'}}</td>
                         <td>{{account.faNum}}</td>
                     </tr>
                 </ng-template>
