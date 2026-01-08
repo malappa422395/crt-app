@@ -36,10 +36,10 @@ export class AccountsTargetComponent {
       }));
 
     // Filter out nulls and duplicates based on clientAccountNumber
-    // this.selectedTargetAccounts = this._targetAccounts
-    //   .filter(acc => acc != null)
-    //   .filter((acc, i, arr) => i === arr.findIndex(a => a.clientAccountNumber === acc.clientAccountNumber));
-    // this.getSelectedTargetAccounts.emit(this.selectedTargetAccounts);
+    this.selectedTargetAccounts = this._targetAccounts
+      .filter(acc => acc != null)
+      .filter((acc, i, arr) => i === arr.findIndex(a => a.clientAccountNumber === acc.clientAccountNumber));
+    this.getSelectedTargetAccounts.emit(this.selectedTargetAccounts);
   }
 
   get targetAccounts() {
