@@ -28,13 +28,29 @@ export class AccountsTargetComponent {
 
   @Input()
   set targetAccounts(accounts: any[]) {
+    const existingMap = new Map(
+      (this._targetAccounts ?? []).map(acc => [
+        acc.clientAccountNumber,
+        acc
+      ])
+    );
+
     this._targetAccounts = (accounts ?? [])
       .filter(acc => acc != null)
-      .filter((acc, i, arr) => i === arr.findIndex(a => a.clientAccountNumber === acc.clientAccountNumber)).map(acc => ({
-        ...acc,
-        isInclude: true   // 👈 Add new property here
-      }));
+      .filter(
+        (acc, i, arr) =>
+          i === arr.findIndex(a => a.clientAccountNumber === acc.clientAccountNumber)
+      )
+      .map(acc => {
+        const existingAcc = existingMap.get(acc.clientAccountNumber);
 
+        return {
+          ...acc,
+          // ✅ persist old value if exists, otherwise default to true
+          isInclude:
+            existingAcc?.isInclude ?? acc.isInclude ?? true
+        };
+      });
     // Filter out nulls and duplicates based on clientAccountNumber
     this.selectedTargetAccounts = this._targetAccounts
       .filter(acc => acc != null)
