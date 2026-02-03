@@ -25,6 +25,7 @@ export class AccountsTargetComponent {
   clients: any[] = [];
   isVissible: boolean = false;
   private _targetAccounts: any[] = [];
+  labelName: string = 'Create Case(s)'
 
   @Input()
   set targetAccounts(accounts: any[]) {
@@ -64,6 +65,7 @@ export class AccountsTargetComponent {
 
   constructor(private faUserStore: FaUserStore, private MMAService: MoneyManagerAccountService, private confirmationService: ConfirmationService) {
     this.faUserParams = this.faUserStore.faUser();
+    this.labelName = this.faUserParams && this.faUserParams.caseId ? 'Update Case' : 'Create Case(s)';
   }
 
   onToggleChange(event: any, account: any) {
@@ -118,28 +120,32 @@ export class AccountsTargetComponent {
         }
       }
       if (certtitle) {
-        this.MMAService.isDuplicateCase(certtitle).subscribe((response: any) => {
-          if (response && response.value) {
-            const isduplicate = response.value.find((obj: any) => {
-              if (obj && obj.cert_title === certtitle) {
-                return obj;
-              }
-            })
-            if (isduplicate) {
-              this.confirmModal({ message: 'A case already exist.', header: 'Message' });
-            } else {
-              if (this.selectedRowData && this.selectedTargetAccounts) {
-                if (!contactId) {
-                  console.warn("Missing contactId, cannot create case.");
-                } else {
-                  // ensure cssId is a string when calling CreateCase
-                  this.CreateCase(cssId ?? '', contactId, this.selectedTargetAccounts);
-                  console.log("Record creation Process completed");
+        if (this.faUserParams && this.faUserParams?.caseId && this.selectedRowData && this.selectedTargetAccounts) {
+          this.updateCase(this.faUserParams?.caseId, this.faUserParams?.cssId ?? '', this.selectedTargetAccounts)
+        } else {
+          this.MMAService.isDuplicateCase(certtitle).subscribe((response: any) => {
+            if (response && response.value) {
+              const isduplicate = response.value.find((obj: any) => {
+                if (obj && obj.cert_title === certtitle) {
+                  return obj;
+                }
+              })
+              if (isduplicate) {
+                this.confirmModal({ message: 'A case already exist.', header: 'Message' });
+              } else {
+                if (this.selectedRowData && this.selectedTargetAccounts) {
+                  if (!contactId) {
+                    console.warn("Missing contactId, cannot create case.");
+                  } else {
+                    // ensure cssId is a string when calling CreateCase
+                    this.CreateCase(cssId ?? '', contactId, this.selectedTargetAccounts);
+                    console.log("Record creation Process completed");
+                  }
                 }
               }
             }
-          }
-        })
+          })
+        }
       }
     }
   }
@@ -167,6 +173,45 @@ export class AccountsTargetComponent {
       (result: { id: string; }) => {
         console.log("Client created with ID: " + result.id);
         // perform operations on record creation
+      },
+      (error: { message: any; }) => {
+        console.log(error.message);
+        // handle error conditions
+      }
+    );
+  }
+
+  updateCase(caseId: string, cssid: string, targetAccounts: any[] | null) {
+    let title = '';
+    if (this.selectedRowData.clientLastName) {
+      title = this.selectedRowData.clientLastName + ', ' + this.selectedRowData.clientFirstName + " - " + cssid;
+    } else {
+      title = this.selectedRowData.clientFirstName + " - " + cssid;
+    }
+    const secondaryClients = this.selectedTargetAccounts?.filter((acc: any) => acc.clientId !== this.selectedRowData.clientId)
+    const secondaryClientIds = [...new Set(secondaryClients?.map((acc: any) => acc.clientId))].join(' : ');
+    const friendlyPartyNum = [...new Set(secondaryClients?.map((acc: any) => acc.clientFriendlyPartyNum))].join(' : ');
+    const totalMarketValue = this.selectedTargetAccounts?.reduce((acc: number, curr: any) => acc + parseFloat(curr.marketValue), 0);
+    console.log("Total Market Value: " + totalMarketValue);
+    const caseData =
+    {
+      "cert_title": title,
+      // "cert_financialadvisorid@odata.bind": "/contacts(" + faId + ")",
+      "cert_primary_clientid": this.selectedRowData.clientId,
+      "cert_fpn": this.selectedRowData.clientFriendlyPartyNum,
+      "cert_secondary_clientid": secondaryClientIds,//only if there are multiple clients selected. clientid seperated by ;
+      "cert_secondaryclient_fpn": friendlyPartyNum, //only if there are multiple clients selected. friendlyPartyNum seperated by ;
+      "cert_isprospecttoclient": true // Set the boolean field to 'Yes'
+      // "cert_totalmarketvalue": totalMarketValue
+    }
+    // create bidsL client record
+    Xrm.WebApi.updateRecord("cert_case", caseId, caseData).then(
+      // Xrm.WebApi.createRecord("cert_case", caseData).then(
+      (result: { id: string; }) => {
+        console.log("Case updated with ID: " + result.id);
+        this.CreateAccount(targetAccounts, result.id);
+        this.createClient(this.clients, result.id);
+        this.OpenCaseForm(result.id);
       },
       (error: { message: any; }) => {
         console.log(error.message);

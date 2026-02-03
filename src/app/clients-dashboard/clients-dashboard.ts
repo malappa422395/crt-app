@@ -35,6 +35,7 @@ export class ClientsDashboard {
     { name: 'Prospect', key: 'P' },
   ];
   searchText: string = '';
+  caseId: string = '';
   constructor(private clientsDataService: ClientsDataService, private faUserStore: FaUserStore, private confirmationService: ConfirmationService) { }
   ngOnInit() {
     this.searchText = '';
@@ -49,11 +50,13 @@ export class ClientsDashboard {
         pId: urlData?.pId,
         ntlogin: urlData?.ntlogin,
         clientBaseUrl: urlData?.clientBaseUrl,
+        caseId: urlData?.caseId,
         prospectBaseUrl: urlData?.prospectBaseUrl,
         globalContextUrl: urlData?.globalContextUrl,
         accountBaseUrl: urlData?.accountBaseUrl
       }
       if (faUserParameters) {
+        this.caseId = faUserParameters.caseId ?? '';
         this.faUserStore.setUser(faUserParameters);
       }
       const clientsPayload: ClientsPayload = getClientsPayload({ ntlogin: faUserParameters.ntlogin ?? '', searchText: ""});

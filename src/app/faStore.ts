@@ -1,14 +1,15 @@
 import { Injectable, signal } from '@angular/core';
 
 export interface faParameters {
-    cId?: string,
-    cssId?: string,
-    pId?: string,
-    ntlogin?: string,
-    clientBaseUrl?: string,
-    prospectBaseUrl?: string,
-    globalContextUrl?: string,
-    accountBaseUrl?: string
+    cId?: string;
+    cssId?: string;
+    pId?: string;
+    ntlogin?: string;
+    clientBaseUrl?: string;
+    prospectBaseUrl?: string;
+    globalContextUrl?: string;
+    accountBaseUrl?: string;
+    caseId?: string;
 }
 
 @Injectable({ providedIn: 'root' })
