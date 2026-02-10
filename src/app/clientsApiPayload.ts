@@ -12,9 +12,7 @@ export const getClientsPayload = (clientPayloadInputs: ClientPayloadInputs): Cli
         rows: [
             "2000"
         ],
-        partyEngagementType: [
-            "Client"
-        ],
+        partyEngagementType: ["Client,Interested Party"],
         partyStatus: [
             "Active"
         ],
